@@ -1,0 +1,143 @@
+{
+	Tools = ordered() {
+		Sprite3D = MacroOperator {
+			CtrlWZoom = false,
+			NameSet = true,
+			Inputs = ordered() {
+				StartFrame = Input { Value = -30, },
+				Comments = Input { Value = "v02", },
+				ImageInput = InstanceInput {
+					SourceOp = "singleParticleEmitter",
+					Source = "ParticleStyleBitmap.DropToolsHere",
+				},
+				RotationZInput = InstanceInput {
+					SourceOp = "singleParticleEmitter",
+					Source = "RotationZ",
+					Default = 0,
+				},
+				SizeInput = InstanceInput {
+					SourceOp = "singleParticleEmitter",
+					Source = "ParticleStyle.Size",
+					Default = 1,
+				},
+				Input1 = InstanceInput {
+					SourceOp = "singleParticleTransform",
+					Source = "Transform3DOp.Translate.X",
+					Name = "X",
+					Default = 0,
+				},
+				Input2 = InstanceInput {
+					SourceOp = "singleParticleTransform",
+					Source = "Transform3DOp.Translate.Y",
+					Name = "Y",
+					Default = 0,
+				},
+				Input3 = InstanceInput {
+					SourceOp = "singleParticleTransform",
+					Source = "Transform3DOp.Translate.Z",
+					Name = "Z",
+					Default = 0,
+				},
+				ObjIDInput = InstanceInput {
+					SourceOp = "singleParticleRender",
+					Source = "ObjectID.ObjectID",
+					Default = 1,
+				},
+				MatIDInput = InstanceInput {
+					SourceOp = "singleParticleRender",
+					Source = "MaterialID.MaterialID",
+					Default = 1,
+				}
+			},
+			Outputs = {
+				Output1 = InstanceOutput {
+					SourceOp = "singleParticleTransform",
+					Source = "Output",
+					Name = "Output",
+				}
+			},
+			ViewInfo = GroupInfo { Pos = { 440, 49.5 } },
+			Tools = ordered() {
+				singleParticleRender = pRender {
+					CtrlWShown = false,
+					NameSet = true,
+					Inputs = {
+						_MotionBlurWarning = Input { Disabled = true, },
+						Width = Input { Value = 2048, },
+						Height = Input { Value = 858, },
+						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
+						OutputMode = Input { Disabled = true, },
+						["MaterialID.Nest"] = Input { Value = 1, },
+						["MaterialID.MaterialID"] = Input { Value = 88, },
+						["ObjectID.Nest"] = Input { Value = 1, },
+						["ObjectID.ObjectID"] = Input { Value = 88, },
+						Input = Input {
+							SourceOp = "singleParticleEmitter",
+							Source = "Output",
+						}
+					},
+					ViewInfo = OperatorInfo { Pos = { 0, 41.7576 } },
+				},
+				singleParticleEmitter = pEmitter {
+					ID = 12,
+					CtrlWShown = false,
+					NameSet = true,
+					Inputs = {
+						Number = Input {
+							Value = 1,
+							Expression = "iif(time==comp.GlobalStart,1,0)",
+						},
+						Lifespan = Input {
+							Value = 1001,
+							Expression = "comp.GlobalEnd-comp.GlobalStart+1",
+						},
+						Style = Input { Value = FuID { "ParticleStyleBitmap" }, },
+						["SphereRgn.Size"] = Input { Value = 0, },
+						["ParticleStyle.Size"] = Input { Value = 1, },
+						["ParticleStyle.SizeOverLife"] = Input {
+							SourceOp = "singleParticleEmitterSizeOverLife",
+							Source = "Value",
+						},
+						["ParticleStyle.BlurOverLife"] = Input {
+							SourceOp = "singleParticleEmitterBlurOverLife2D",
+							Source = "Value",
+						}
+					},
+					ViewInfo = OperatorInfo { Pos = { 0, 8.75755 } },
+				},
+				singleParticleTransform = Transform3D {
+					CtrlWShown = false,
+					NameSet = true,
+					Inputs = {
+						SceneInput = Input {
+							SourceOp = "singleParticleRender",
+							Source = "Output",
+						}
+					},
+					ViewInfo = OperatorInfo { Pos = { 0, 74.7576 } },
+				}
+			},
+		},
+		singleParticleEmitterSizeOverLife = LUTBezier {
+			KeyColorSplines = {
+				[0] = {
+					[0] = { 0.5, RH = { 0.333333333333333, 0.5 }, Flags = { Linear = true } },
+					[1] = { 0.5, LH = { 0.666666666666667, 0.5 }, Flags = { Linear = true } }
+				}
+			},
+			SplineColor = { Red = 0, Green = 0, Blue = 0 },
+			CtrlWZoom = false,
+		},
+		singleParticleEmitterBlurOverLife2D = LUTBezier {
+			KeyColorSplines = {
+				[0] = {
+					[0] = { 0.5, RH = { 0.333333333333333, 0.5 }, Flags = { Linear = true } },
+					[1] = { 0.5, LH = { 0.666666666666667, 0.5 }, Flags = { Linear = true } }
+				}
+			},
+			SplineColor = { Red = 0, Green = 0, Blue = 0 },
+			CtrlWZoom = false,
+		}
+	},
+	ActiveTool = "Sprite3D"
+}
