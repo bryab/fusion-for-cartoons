@@ -1,0 +1,391 @@
+{
+	Tools = ordered() {
+		CartoonRimLightMask = MacroOperator {
+			CtrlWZoom = false,
+			CustomData = {
+				Path = {
+					Map = {
+						["Setting:"] = "Macros:\\"
+					}
+				},
+			},
+			Inputs = ordered() {
+				MainInput1 = InstanceInput {
+					SourceOp = "ImageInputPipe",
+					Source = "Input",
+				},
+				MainInput2 = InstanceInput {
+					SourceOp = "CRLM_Cam",
+					Source = "SceneInput",
+					Name = "LightInput",
+				},
+				Input1 = InstanceInput {
+					SourceOp = "CRLM_PreNormalBlur",
+					Source = "XBlurSize",
+					Name = "Edge Thickness",
+				},
+				Input2 = InstanceInput {
+					SourceOp = "CRLM_OptionalInvert",
+					Source = "Invert",
+					Width = 1,
+					Default = 1,
+				},
+				Input3 = InstanceInput {
+					SourceOp = "CRLM_Alpha",
+					Source = "UseGPU",
+					Default = 1,
+				},
+				Input4 = InstanceInput {
+					SourceOp = "CRLM_R3D",
+					Source = "RendererType",
+					Default = 1,
+				},
+				EffectMask = InstanceInput {
+					SourceOp = "CRLM_PR1",
+					Source = "Input",
+					Name = "Effect Mask",
+				}
+			},
+			Outputs = {
+				MainOutput1 = InstanceOutput {
+					SourceOp = "CRLM_OutputPipe",
+					Source = "Output",
+				}
+			},
+			ViewInfo = GroupInfo { Pos = { 990, 82.5 } },
+			Tools = ordered() {
+				CRLM_Depth32 = ChangeDepth {
+					CtrlWShown = false,
+					NameSet = true,
+					Inputs = {
+						UseGPU = Input { Expression = "CRLM_Alpha.UseGPU", },
+						Depth = Input { Value = 4, },
+						Input = Input {
+							SourceOp = "ImageInputPipe",
+							Source = "Output",
+						}
+					},
+					ViewInfo = OperatorInfo { Pos = { -353.045, 8.13635 } },
+				},
+				CRLM_Alpha = BitmapMask {
+					CtrlWShown = false,
+					NameSet = true,
+					Inputs = {
+						Filter = Input { Value = FuID { "Fast Gaussian" }, },
+						MaskWidth = Input { Value = 4096, },
+						MaskHeight = Input { Value = 1716, },
+						PixelAspect = Input { Value = { 1, 1 }, },
+						ClippingMode = Input { Value = FuID { "None" }, },
+						Image = Input {
+							SourceOp = "ImageInputPipe",
+							Source = "Output",
+						}
+					},
+					ViewInfo = OperatorInfo { Pos = { -83.015, 115.379 } },
+				},
+				ImageInputPipe = PipeRouter {
+					CtrlWShown = false,
+					NameSet = true,
+					ViewInfo = PipeRouterInfo { Pos = { -358.015, 115.379 } },
+				},
+				CRLM_Tex = Texture {
+					CtrlWShown = false,
+					NameSet = true,
+					Inputs = {
+						Input = Input {
+							SourceOp = "CRLM_Alpha",
+							Source = "Mask",
+						}
+					},
+					ViewInfo = OperatorInfo { Pos = { -83.015, 148.379 } },
+				},
+				CRLM_PreNormalBlur = Blur {
+					CtrlWShown = false,
+					NameSet = true,
+					Inputs = {
+						UseGPU = Input { Expression = "CRLM_Alpha.UseGPU", },
+						Filter = Input { Value = FuID { "Fast Gaussian" }, },
+						XBlurSize = Input { Value = 10, },
+						Input = Input {
+							SourceOp = "CRLM_Depth32",
+							Source = "Output",
+						}
+					},
+					ViewInfo = OperatorInfo { Pos = { -215.545, 8.13635 } },
+				},
+				CRLM_CreateBump = CreateBumpMap {
+					CtrlWShown = false,
+					NameSet = true,
+					Inputs = {
+						UseGPU = Input { Expression = "CRLM_Alpha.UseGPU", },
+						FilterSize = Input { Value = FuID { "5" }, },
+						Input = Input {
+							SourceOp = "CRLM_PreNormalBlur",
+							Source = "Output",
+						},
+						SourceChannel = Input { Value = FuID { "Alpha" }, },
+						ClampNormalZ = Input { Value = 0.228, },
+						WrapMode = Input { Value = FuID { "Wrap" }, },
+						HeightScale = Input {
+							Value = 250,
+							Expression = "250*(CRLM_PreNormalBlur.Output.Width/CRLM_PreNormalBlur.Output.OriginalWidth)",
+						},
+						TextureDepth = Input { Value = 3, },
+						CommentsNest = Input { Value = 0, },
+						FrameRenderScriptNest = Input { Value = 0, }
+					},
+					ViewInfo = OperatorInfo { Pos = { -105.545, 8.13635 } },
+				},
+				CRLM_BumpMap = BumpMap {
+					CtrlWShown = false,
+					NameSet = true,
+					Inputs = {
+						SourceImageType = Input { Value = 1, },
+						["FilterMode.Nest"] = Input { Value = 1, },
+						Input = Input {
+							SourceOp = "CRLM_CreateBump",
+							Source = "Output",
+						},
+						MaterialIDNest = Input { Value = 1, },
+						MaterialID = Input { Value = 4, }
+					},
+					ViewInfo = OperatorInfo { Pos = { 4.45499, 8.13635 } },
+				},
+				CRLM_ImagePlane = ImagePlane3D {
+					CtrlWShown = false,
+					NameSet = true,
+					Inputs = {
+						SceneInput = Input {
+							SourceOp = "CRLM_Cam",
+							Source = "Output",
+						},
+						["SurfacePlaneInputs.ObjectID.ObjectID"] = Input { Value = 3, },
+						MaterialInput = Input {
+							SourceOp = "CRLM_Blinn",
+							Source = "MaterialOutput",
+						},
+						["MtlStdInputs.MaterialID"] = Input { Value = 7, }
+					},
+					ViewInfo = OperatorInfo { Pos = { 81.985, 181.379 } },
+				},
+				CRLM_Cam = Camera3D {
+					CtrlWShown = false,
+					NameSet = true,
+					Inputs = {
+						ProjectionType = Input { Value = FuID { "Orthographic" }, },
+						AoV = Input { Value = 19.26427, },
+						FLength = Input { Value = 34.9999968656307, },
+						["Stereo.Mode"] = Input { Value = FuID { "Mono" }, },
+						FilmGate = Input { Value = FuID { "BMD_URSAK6x9" }, },
+						ApertureW = Input { Value = 0.831496062992126, },
+						ApertureH = Input { Value = 0.467716535433071, },
+						ViewingVolumeSize = Input {
+							Value = 1.86144578313253,
+							Expression = "(ImageInputPipe.Output.OriginalWidth/ImageInputPipe.Output.OriginalHeight)*2",
+						},
+						["SurfacePlaneInputs.ObjectID.ObjectID"] = Input { Value = 2, },
+						["MtlStdInputs.MaterialID"] = Input { Value = 5, }
+					},
+					ViewInfo = OperatorInfo { Pos = { 81.985, 148.379 } },
+				},
+				CRLM_R3D = Renderer3D {
+					CtrlWShown = false,
+					NameSet = true,
+					CustomData = {
+						ToolVersion = 2
+					},
+					Inputs = {
+						["RendererOpenGL.AntiAliasing.Presets.Color.Supersampling.HighQuality.RateY"] = Input { Value = 3, },
+						["RendererOpenGL.AntiAliasing.Presets.Aux.Supersampling.HighQuality.RateY"] = Input { Value = 3, },
+						Width = Input {
+							Value = 1545,
+							Expression = "ImageInputPipe.Output.OriginalWidth",
+						},
+						Height = Input {
+							Value = 1660,
+							Expression = "ImageInputPipe.Output.OriginalHeight",
+						},
+						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, },
+						SceneInput = Input {
+							SourceOp = "CRLM_ImagePlane",
+							Source = "Output",
+						},
+						RendererType = Input { Value = FuID { "RendererOpenGL" }, },
+						["RendererSoftware.Channels.Nest"] = Input { Value = 1, },
+						["RendererSoftware.LightingEnabled"] = Input { Value = 1, },
+						["RendererOpenGLUV.LightingEnabled"] = Input { Value = 1, },
+						["RendererOpenGL.Channels.Nest"] = Input { Value = 1, },
+						["RendererOpenGL.AntiAliasing.Nest"] = Input { Value = 1, },
+						["RendererOpenGL.AntiAliasing.Channels.RGBA.LowQuality.Enable"] = Input { Value = 0, },
+						["RendererOpenGL.AntiAliasing.Channels.RGBA.HighQuality.Enable"] = Input { Value = 1, },
+						["RendererOpenGL.AntiAliasing.Presets.Color.Supersampling.HighQuality.Rate"] = Input { Value = 3, },
+						["RendererOpenGL.AntiAliasing.Presets.Color.Multisampling.LowQuality.SampleCount"] = Input { Value = 2, },
+						["RendererOpenGL.AntiAliasing.Presets.Color.Multisampling.HighQuality.SampleCount"] = Input { Value = 3, },
+						["RendererOpenGL.AntiAliasing.Presets.Aux.Supersampling.HighQuality.Rate"] = Input { Value = 3, },
+						["RendererOpenGL.AntiAliasing.Presets.Aux.Multisampling.LowQuality.SampleCount"] = Input { Value = 2, },
+						["RendererOpenGL.AntiAliasing.Presets.Aux.Multisampling.HighQuality.SampleCount"] = Input { Value = 3, },
+						["RendererOpenGL.AccumulationEffects"] = Input { Value = 1, },
+						["RendererOpenGL.AccumQuality"] = Input { Value = 32, },
+						["RendererOpenGL.LightingEnabled"] = Input { Value = 1, },
+						["RendererOpenGL.MaximumTextureDepth"] = Input { Value = 4, },
+						["RendererOpenGL.ShadingModel"] = Input { Value = 0, }
+					},
+					ViewInfo = OperatorInfo { Pos = { 81.985, 214.379 } },
+					SubInputsData = {
+						RendererOpenGL = {
+							Version = 1
+						}
+					}
+				},
+				CRLM_RestoreDoD = SetDomain {
+					CtrlWShown = false,
+					NameSet = true,
+					Inputs = {
+						Input = Input {
+							SourceOp = "CRLM_MaskInputIntersect",
+							Source = "Output",
+						},
+						Foreground = Input {
+							SourceOp = "ImageInputPipe",
+							Source = "Output",
+						}
+					},
+					ViewInfo = OperatorInfo { Pos = { 81.985, 412.379 } },
+				},
+				CRLM_OutputPipe = PipeRouter {
+					CtrlWShown = false,
+					NameSet = true,
+					Inputs = {
+						Input = Input {
+							SourceOp = "CRLM_RestoreDoD",
+							Source = "Output",
+						}
+					},
+					ViewInfo = PipeRouterInfo { Pos = { 81.985, 445.379 } },
+				},
+				CRLM_ToMonoChannel = BitmapMask {
+					CtrlWShown = false,
+					NameSet = true,
+					Inputs = {
+						Filter = Input { Value = FuID { "Fast Gaussian" }, },
+						MaskWidth = Input { Value = 1920, },
+						MaskHeight = Input { Value = 800, },
+						PixelAspect = Input { Value = { 1, 1 }, },
+						ClippingMode = Input { Value = FuID { "None" }, },
+						Image = Input {
+							SourceOp = "CRLM_R3D",
+							Source = "Output",
+						},
+						Channel = Input { Value = FuID { "Red" }, },
+						High = Input { Value = 0.01, }
+					},
+					ViewInfo = OperatorInfo { Pos = { 81.985, 280.379 } },
+				},
+				CRLM_PR1 = PipeRouter {
+					CtrlWShown = false,
+					ViewInfo = PipeRouterInfo { Pos = { 356.985, 181.379 } },
+				},
+				CRLM_OptionalInvert = BitmapMask {
+					CtrlWShown = false,
+					NameSet = true,
+					Inputs = {
+						EffectMask = Input {
+							SourceOp = "CRLM_Alpha",
+							Source = "Mask",
+						},
+						Filter = Input { Value = FuID { "Fast Gaussian" }, },
+						PaintMode = Input { Value = FuID { "Minimum" }, },
+						MaskWidth = Input { Value = 1920, },
+						MaskHeight = Input { Value = 1080, },
+						PixelAspect = Input { Value = { 1, 1 }, },
+						ClippingMode = Input { Value = FuID { "None" }, },
+						Image = Input {
+							SourceOp = "CRLM_ToMonoChannel",
+							Source = "Mask",
+						}
+					},
+					ViewInfo = OperatorInfo { Pos = { 81.985, 313.379 } },
+				},
+				CRLM_MaskInputIntersect = BrightnessContrast {
+					CtrlWShown = false,
+					NameSet = true,
+					Inputs = {
+						EffectMask = Input {
+							SourceOp = "CRLM_MaskInput",
+							Source = "Mask",
+						},
+						ApplyMaskInverted = Input { Value = 1, },
+						Red = Input { Value = 0, },
+						Green = Input { Value = 0, },
+						Blue = Input { Value = 0, },
+						Alpha = Input { Value = 1, },
+						Gain = Input { Value = 0, },
+						Input = Input {
+							SourceOp = "CRLM_OptionalInvert",
+							Source = "Mask",
+						}
+					},
+					ViewInfo = OperatorInfo { Pos = { 81.985, 346.379 } },
+				},
+				CRLM_BG = Background {
+					CtrlWShown = false,
+					NameSet = true,
+					Inputs = {
+						Width = Input {
+							Value = 1545,
+							Expression = "ImageInputPipe.Output.Width",
+						},
+						Height = Input {
+							Value = 1660,
+							Expression = "ImageInputPipe.Output.Height",
+						},
+						Depth = Input { Value = 1, },
+						["Gamut.SLogVersion"] = Input { Value = FuID { "SLog2" }, }
+					},
+					ViewInfo = OperatorInfo { Pos = { 191.985, 313.379 } },
+				},
+				CRLM_MaskInput = BitmapMask {
+					CtrlWShown = false,
+					NameSet = true,
+					Inputs = {
+						EffectMask = Input {
+							SourceOp = "CRLM_PR1",
+							Source = "Output",
+						},
+						Filter = Input { Value = FuID { "Fast Gaussian" }, },
+						PaintMode = Input { Value = FuID { "Minimum" }, },
+						MaskWidth = Input { Value = 1920, },
+						MaskHeight = Input { Value = 1080, },
+						PixelAspect = Input { Value = { 1, 1 }, },
+						ClippingMode = Input { Value = FuID { "None" }, },
+						Image = Input {
+							SourceOp = "CRLM_BG",
+							Source = "Output",
+						}
+					},
+					ViewInfo = OperatorInfo { Pos = { 191.985, 346.379 } },
+				},
+				CRLM_Blinn = MtlBlinn {
+					CtrlWShown = false,
+					NameSet = true,
+					Inputs = {
+						["Diffuse.Color.Material"] = Input {
+							SourceOp = "CRLM_Tex",
+							Source = "Output",
+						},
+						["Specular.Nest"] = Input { Value = 1, },
+						["Bumpmap.Material"] = Input {
+							SourceOp = "CRLM_BumpMap",
+							Source = "MaterialOutput",
+						},
+						ReceivesShadows = Input { Value = 0, },
+						MaterialIDNest = Input { Value = 1, },
+						MaterialID = Input { Value = 2, }
+					},
+					ViewInfo = OperatorInfo { Pos = { -83.015, 181.379 } },
+				}
+			},
+		}
+	},
+	ActiveTool = "CartoonRimLightMask"
+}
