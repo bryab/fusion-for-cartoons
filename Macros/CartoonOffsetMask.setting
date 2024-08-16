@@ -1,0 +1,125 @@
+{
+	Tools = ordered() {
+		CartoonOffsetMask = MacroOperator {
+			CtrlWZoom = false,
+			NameSet = true,
+			Inputs = ordered() {
+				Offset = Input { Value = { 0.481971454058876, 0.475736925515055 }, },
+				Invert = InstanceInput {
+					SourceOp = "AlphaOffset",
+					Source = "Invert",
+				},
+				Input1 = InstanceInput {
+					SourceOp = "PipeRouter1_1",
+					Source = "Input",
+				},
+				EffectMask = InstanceInput {
+					SourceOp = "FinalMask",
+					Source = "EffectMask",
+				},
+				CommentsNest = Input { Value = 0, },
+			},
+			Outputs = {
+				Output = InstanceOutput {
+					SourceOp = "FinalMask",
+					Source = "Mask",
+				}
+			},
+			Tools = ordered() {
+				AlphaOffset = BitmapMask {
+					CtrlWShown = false,
+					NameSet = true,
+					Inputs = {
+						EffectMask = Input {
+							SourceOp = "AlphaMask",
+							Source = "Mask",
+						},
+						Filter = Input { Value = FuID { "Fast Gaussian" }, },
+						PaintMode = Input { Value = FuID { "Subtract" }, },
+						PixelAspect = Input { Value = { 1, 1 }, },
+						ClippingMode = Input { Value = FuID { "None" }, },
+						Image = Input {
+							SourceOp = "ShadowBlur",
+							Source = "Output",
+						},
+						Center = Input {
+							Value = { 0.4864317573595, 0.488415213946117 },
+							Expression = "CartoonOffsetMask.Offset",
+						},
+					},
+					ViewInfo = OperatorInfo { Pos = { 482.47, -61.5193 } },
+				},
+				PipeRouter1_1 = PipeRouter {
+					CtrlWShown = false,
+					ViewInfo = PipeRouterInfo { Pos = { 357.21, 46.231 } },
+				},
+				ShadowBlur = Blur {
+					CtrlWShown = false,
+					NameSet = true,
+					Inputs = {
+						Filter = Input { Value = FuID { "Fast Gaussian" }, },
+						XBlurSize = Input {
+							Value = 0,
+							Expression = "CartoonOffsetMask.Blur",
+						},
+						Input = Input {
+							SourceOp = "PipeRouter1_1",
+							Source = "Output",
+						},
+					},
+					ViewInfo = OperatorInfo { Pos = { 487.318, -0.909556 } },
+				},
+				AlphaMask = BitmapMask {
+					CtrlWShown = false,
+					Inputs = {
+						Filter = Input { Value = FuID { "Fast Gaussian" }, },
+						PaintMode = Input { Value = FuID { "Add" }, },
+						PixelAspect = Input { Value = { 1, 1 }, },
+						ClippingMode = Input { Value = FuID { "None" }, },
+						Image = Input {
+							SourceOp = "PipeRouter1_1",
+							Source = "Output",
+						},
+					},
+					ViewInfo = OperatorInfo { Pos = { 383.195, -60.6622 } },
+				},
+				FinalMask = BitmapMask {
+					CtrlWZoom = false,
+					Inputs = {
+						Filter = Input { Value = FuID { "Fast Gaussian" }, },
+						PixelAspect = Input { Value = { 1, 1 }, },
+						ClippingMode = Input { Value = FuID { "None" }, },
+						Image = Input {
+							SourceOp = "AlphaOffset",
+							Source = "Mask",
+						},
+					},
+					ViewInfo = OperatorInfo { Pos = { 220, 16.5 } },
+				}
+			},
+			UserControls = ordered() {
+				Offset = {
+					INP_DefaultX = 0.5,
+					INPID_PreviewControl = "CrosshairControl",
+					INP_DefaultY = 0.5,
+					LINKID_DataType = "Point",
+					ICS_ControlPage = "Controls",
+					INPID_InputControl = "OffsetControl",
+					CHC_Style = "NormalCross",
+					LINKS_Name = "Offset"
+				},
+				Blur = {
+					ICS_ControlPage = "Controls",
+					INP_Integer = false,
+					INPID_InputControl = "SliderControl",
+					LINKID_DataType = "Number",
+					INP_MinScale = 0,
+					INP_Default = 0,
+					INP_MaxScale = 10,
+					LINKS_Name = "Blur"
+				}
+			}
+		}
+	},
+	ActiveTool = "CartoonOffsetMask"
+}
