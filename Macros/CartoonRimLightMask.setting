@@ -25,17 +25,22 @@
 					Name = "Edge Thickness",
 				},
 				Input2 = InstanceInput {
+					SourceOp = "CRLM_MaskSoftEdge",
+					Source = "SoftEdge",
+					Default = 0,
+				},
+				Input3 = InstanceInput {
 					SourceOp = "CRLM_OptionalInvert",
 					Source = "Invert",
 					Width = 1,
 					Default = 1,
 				},
-				Input3 = InstanceInput {
+				Input4 = InstanceInput {
 					SourceOp = "CRLM_Alpha",
 					Source = "UseGPU",
 					Default = 1,
 				},
-				Input4 = InstanceInput {
+				Input5 = InstanceInput {
 					SourceOp = "CRLM_R3D",
 					Source = "RendererType",
 					Default = 1,
@@ -52,7 +57,22 @@
 					Source = "Output",
 				}
 			},
-			ViewInfo = GroupInfo { Pos = { 990, 82.5 } },
+			ViewInfo = GroupInfo {
+				Pos = { 1210, 16.5 },
+				Flags = {
+					Expanded = true,
+					AllowPan = false,
+					GridSnap = true,
+					AutoSnap = true,
+					Thumbnails = false,
+					RemoveRouters = true
+				},
+				Size = { 801.03, 502.394, 400.515, 24.2424 },
+				Direction = "Vertical",
+				PipeStyle = "Direct",
+				Scale = 1,
+				Offset = { 0, 0 }
+			},
 			Tools = ordered() {
 				CRLM_Depth32 = ChangeDepth {
 					CtrlWShown = false,
@@ -65,7 +85,7 @@
 							Source = "Output",
 						}
 					},
-					ViewInfo = OperatorInfo { Pos = { -353.045, 8.13635 } },
+					ViewInfo = OperatorInfo { Pos = { -353.045, 8.13625 } },
 				},
 				CRLM_Alpha = BitmapMask {
 					CtrlWShown = false,
@@ -111,7 +131,7 @@
 							Source = "Output",
 						}
 					},
-					ViewInfo = OperatorInfo { Pos = { -215.545, 8.13635 } },
+					ViewInfo = OperatorInfo { Pos = { -215.545, 8.13625 } },
 				},
 				CRLM_CreateBump = CreateBumpMap {
 					CtrlWShown = false,
@@ -134,7 +154,7 @@
 						CommentsNest = Input { Value = 0, },
 						FrameRenderScriptNest = Input { Value = 0, }
 					},
-					ViewInfo = OperatorInfo { Pos = { -105.545, 8.13635 } },
+					ViewInfo = OperatorInfo { Pos = { -105.545, 8.13625 } },
 				},
 				CRLM_BumpMap = BumpMap {
 					CtrlWShown = false,
@@ -149,7 +169,7 @@
 						MaterialIDNest = Input { Value = 1, },
 						MaterialID = Input { Value = 4, }
 					},
-					ViewInfo = OperatorInfo { Pos = { 4.45499, 8.13635 } },
+					ViewInfo = OperatorInfo { Pos = { 4.45499, 8.13625 } },
 				},
 				CRLM_ImagePlane = ImagePlane3D {
 					CtrlWShown = false,
@@ -189,14 +209,16 @@
 					ViewInfo = OperatorInfo { Pos = { 81.985, 148.379 } },
 				},
 				CRLM_R3D = Renderer3D {
-					CtrlWShown = false,
 					NameSet = true,
 					CustomData = {
-						ToolVersion = 2
+						ToolVersion = 2,
 					},
 					Inputs = {
+						["RendererSoftware.Channels.Nest"] = Input { Value = 1, },
 						["RendererOpenGL.AntiAliasing.Presets.Color.Supersampling.HighQuality.RateY"] = Input { Value = 3, },
+						["RendererSoftware.LightingEnabled"] = Input { Value = 1, },
 						["RendererOpenGL.AntiAliasing.Presets.Aux.Supersampling.HighQuality.RateY"] = Input { Value = 3, },
+						["RendererOpenGLUV.LightingEnabled"] = Input { Value = 1, },
 						Width = Input {
 							Value = 1545,
 							Expression = "ImageInputPipe.Output.OriginalWidth",
@@ -211,9 +233,6 @@
 							Source = "Output",
 						},
 						RendererType = Input { Value = FuID { "RendererOpenGL" }, },
-						["RendererSoftware.Channels.Nest"] = Input { Value = 1, },
-						["RendererSoftware.LightingEnabled"] = Input { Value = 1, },
-						["RendererOpenGLUV.LightingEnabled"] = Input { Value = 1, },
 						["RendererOpenGL.Channels.Nest"] = Input { Value = 1, },
 						["RendererOpenGL.AntiAliasing.Nest"] = Input { Value = 1, },
 						["RendererOpenGL.AntiAliasing.Channels.RGBA.LowQuality.Enable"] = Input { Value = 0, },
@@ -230,7 +249,7 @@
 						["RendererOpenGL.MaximumTextureDepth"] = Input { Value = 4, },
 						["RendererOpenGL.ShadingModel"] = Input { Value = 0, }
 					},
-					ViewInfo = OperatorInfo { Pos = { 81.985, 214.379 } },
+					ViewInfo = OperatorInfo { Pos = { 55, 214.5 } },
 					SubInputsData = {
 						RendererOpenGL = {
 							Version = 1
@@ -264,7 +283,6 @@
 					ViewInfo = PipeRouterInfo { Pos = { 81.985, 445.379 } },
 				},
 				CRLM_ToMonoChannel = BitmapMask {
-					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
 						Filter = Input { Value = FuID { "Fast Gaussian" }, },
@@ -279,19 +297,18 @@
 						Channel = Input { Value = FuID { "Red" }, },
 						High = Input { Value = 0.01, }
 					},
-					ViewInfo = OperatorInfo { Pos = { 81.985, 280.379 } },
+					ViewInfo = OperatorInfo { Pos = { 55, 247.5 } },
 				},
 				CRLM_PR1 = PipeRouter {
 					CtrlWShown = false,
 					ViewInfo = PipeRouterInfo { Pos = { 356.985, 181.379 } },
 				},
 				CRLM_OptionalInvert = BitmapMask {
-					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
 						EffectMask = Input {
-							SourceOp = "CRLM_Alpha",
-							Source = "Mask",
+							SourceOp = "PipeRouter1",
+							Source = "Output",
 						},
 						Filter = Input { Value = FuID { "Fast Gaussian" }, },
 						PaintMode = Input { Value = FuID { "Minimum" }, },
@@ -304,10 +321,9 @@
 							Source = "Mask",
 						}
 					},
-					ViewInfo = OperatorInfo { Pos = { 81.985, 313.379 } },
+					ViewInfo = OperatorInfo { Pos = { 55, 280.5 } },
 				},
 				CRLM_MaskInputIntersect = BrightnessContrast {
-					CtrlWShown = false,
 					NameSet = true,
 					Inputs = {
 						EffectMask = Input {
@@ -321,11 +337,11 @@
 						Alpha = Input { Value = 1, },
 						Gain = Input { Value = 0, },
 						Input = Input {
-							SourceOp = "CRLM_OptionalInvert",
+							SourceOp = "CRLM_MaskSoftEdge",
 							Source = "Mask",
 						}
 					},
-					ViewInfo = OperatorInfo { Pos = { 81.985, 346.379 } },
+					ViewInfo = OperatorInfo { Pos = { 81.985, 346.5 } },
 				},
 				CRLM_BG = Background {
 					CtrlWShown = false,
@@ -383,6 +399,35 @@
 						MaterialID = Input { Value = 2, }
 					},
 					ViewInfo = OperatorInfo { Pos = { -83.015, 181.379 } },
+				},
+				CRLM_MaskSoftEdge = BitmapMask {
+					NameSet = true,
+					Inputs = {
+						Filter = Input { Value = FuID { "Fast Gaussian" }, },
+						PaintMode = Input { Value = FuID { "Minimum" }, },
+						MaskWidth = Input { Value = 1920, },
+						MaskHeight = Input { Value = 1080, },
+						PixelAspect = Input { Value = { 1, 1 }, },
+						ClippingMode = Input { Value = FuID { "None" }, },
+						Image = Input {
+							SourceOp = "CRLM_OptionalInvert",
+							Source = "Mask",
+						},
+						EffectMask = Input {
+							SourceOp = "PipeRouter1",
+							Source = "Output",
+						}
+					},
+					ViewInfo = OperatorInfo { Pos = { 55, 313.5 } },
+				},
+				PipeRouter1 = PipeRouter {
+					Inputs = {
+						Input = Input {
+							SourceOp = "CRLM_Alpha",
+							Source = "Mask",
+						}
+					},
+					ViewInfo = PipeRouterInfo { Pos = { 3.50718, 263.09 } },
 				}
 			},
 		}
