@@ -28,7 +28,7 @@
 					SourceOp = "CFK_CT",
 					Source = "NumberIn4",
 					Name = "Tolerance",
-					Default = 0.0001,
+					Default = 0.001,
 				},
 				Input5 = InstanceInput {
 					SourceOp = "CFK_MASK",
