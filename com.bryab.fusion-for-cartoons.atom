@@ -1,0 +1,15 @@
+    Atom {
+        Name = "Fusion For Cartoons",
+        Category = "Tools",
+        Author = "bryab",
+        Version = 1.0,
+        Date = {2025-04-19},
+        Category = Tools/Composite
+        Description = [[A collection of Macros for compositing 2D animation in Fusion]],
+     
+        Deploy = {
+            "Macros/FusionForCartoons/CartoonOffsetMask.setting",
+            "Macros/FusionForCartoons/CartoonRimLightMask.setting",
+        },
+        Minimum = 9.00,
+    }
