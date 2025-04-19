@@ -2,13 +2,10 @@
 	Tools = ordered() {
 		Sprite3D = MacroOperator {
 			CtrlWZoom = false,
-			NameSet = true,
 			CustomData = {
 				HelpPage = "https://github.com/bryab/fusion-for-cartoons",
 			},
 			Inputs = ordered() {
-				StartFrame = Input { Value = -30, },
-				Comments = Input { Value = "v02", },
 				ImageInput = InstanceInput {
 					SourceOp = "singleParticleEmitter",
 					Source = "ParticleStyleBitmap.DropToolsHere",
@@ -59,7 +56,20 @@
 					Name = "Output",
 				}
 			},
-			ViewInfo = GroupInfo { Pos = { 440, 49.5 } },
+			ViewInfo = GroupInfo {
+				Pos = { 484, 139 },
+				Flags = {
+					Expanded = true,
+					AllowPan = false,
+					AutoSnap = true,
+					RemoveRouters = true
+				},
+				Size = { 126, 130.3, 63, 22 },
+				Direction = "Horizontal",
+				PipeStyle = "Direct",
+				Scale = 1,
+				Offset = { 0, 0 }
+			},
 			Tools = ordered() {
 				singleParticleRender = pRender {
 					CtrlWShown = false,
@@ -77,36 +87,21 @@
 						Input = Input {
 							SourceOp = "singleParticleEmitter",
 							Source = "Output",
-						}
+						},
 					},
-					ViewInfo = OperatorInfo { Pos = { 0, 41.7576 } },
+					ViewInfo = OperatorInfo { Pos = { 0, 43.1501 } },
 				},
 				singleParticleEmitter = pEmitter {
-					ID = 12,
-					CtrlWShown = false,
+					ID = 263,
 					NameSet = true,
 					Inputs = {
-						Number = Input {
-							Value = 1,
-							Expression = "iif(time==comp.GlobalStart,1,0)",
-						},
-						Lifespan = Input {
-							Value = 1001,
-							Expression = "comp.GlobalEnd-comp.GlobalStart+1",
-						},
+						Number = Input { Value = 1, },
+						Lifespan = Input { Value = 1, },
 						Style = Input { Value = FuID { "ParticleStyleBitmap" }, },
-						["SphereRgn.Size"] = Input { Value = 0, },
 						["ParticleStyle.Size"] = Input { Value = 1, },
-						["ParticleStyle.SizeOverLife"] = Input {
-							SourceOp = "singleParticleEmitterSizeOverLife",
-							Source = "Value",
-						},
-						["ParticleStyle.BlurOverLife"] = Input {
-							SourceOp = "singleParticleEmitterBlurOverLife2D",
-							Source = "Value",
-						}
+						["SphereRgn.Size"] = Input { Value = 0, }
 					},
-					ViewInfo = OperatorInfo { Pos = { 0, 8.75755 } },
+					ViewInfo = OperatorInfo { Pos = { 0, 10.15 } },
 				},
 				singleParticleTransform = Transform3D {
 					CtrlWShown = false,
@@ -115,31 +110,11 @@
 						SceneInput = Input {
 							SourceOp = "singleParticleRender",
 							Source = "Output",
-						}
+						},
 					},
-					ViewInfo = OperatorInfo { Pos = { 0, 74.7576 } },
+					ViewInfo = OperatorInfo { Pos = { 0, 76.15 } },
 				}
 			},
-		},
-		singleParticleEmitterSizeOverLife = LUTBezier {
-			KeyColorSplines = {
-				[0] = {
-					[0] = { 0.5, RH = { 0.333333333333333, 0.5 }, Flags = { Linear = true } },
-					[1] = { 0.5, LH = { 0.666666666666667, 0.5 }, Flags = { Linear = true } }
-				}
-			},
-			SplineColor = { Red = 0, Green = 0, Blue = 0 },
-			CtrlWZoom = false,
-		},
-		singleParticleEmitterBlurOverLife2D = LUTBezier {
-			KeyColorSplines = {
-				[0] = {
-					[0] = { 0.5, RH = { 0.333333333333333, 0.5 }, Flags = { Linear = true } },
-					[1] = { 0.5, LH = { 0.666666666666667, 0.5 }, Flags = { Linear = true } }
-				}
-			},
-			SplineColor = { Red = 0, Green = 0, Blue = 0 },
-			CtrlWZoom = false,
 		}
 	},
 	ActiveTool = "Sprite3D"
