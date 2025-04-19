@@ -1,0 +1,160 @@
+{
+	Tools = ordered() {
+		CartoonFillMask = MacroOperator {
+			CtrlWZoom = false,
+			CustomData = {
+				HelpPage = "https://github.com/bryab/fusion-for-cartoons",
+			},
+			Inputs = ordered() {
+				Input2 = InstanceInput {
+					SourceOp = "CFK_CT",
+					Source = "KeyColorR",
+					ControlGroup = 2,
+					Default = 0.745098054409,
+				},
+				Input3 = InstanceInput {
+					SourceOp = "CFK_CT",
+					Source = "KeyColorG",
+					ControlGroup = 2,
+					Default = 0.215671017766,
+				},
+				Input4 = InstanceInput {
+					SourceOp = "CFK_CT",
+					Source = "KeyColorB",
+					ControlGroup = 2,
+					Default = 0.2823529541492,
+				},
+				Input1 = InstanceInput {
+					SourceOp = "CFK_CT",
+					Source = "NumberIn4",
+					Name = "Tolerance",
+					Default = 0.0001,
+				},
+				Input5 = InstanceInput {
+					SourceOp = "CFK_MASK",
+					Source = "SoftEdge",
+				},
+				Input6 = InstanceInput {
+					SourceOp = "CFK_MASK",
+					Source = "PaintMode",
+				},
+				MainInput1 = InstanceInput {
+					SourceOp = "CFK_CT",
+					Source = "Image1",
+					Name = "Input",
+				},
+				EffectMask = InstanceInput {
+					SourceOp = "CFK_MASK",
+					Source = "EffectMask",
+				}
+			},
+			Outputs = {
+				MainOutput1 = InstanceOutput {
+					SourceOp = "CFK_MASK",
+					Source = "Mask",
+				}
+			},
+			ViewInfo = GroupInfo {
+				Pos = { 612, 95 },
+				Flags = {
+					Expanded = true,
+					AllowPan = false,
+					AutoSnap = true,
+					RemoveRouters = true
+				},
+				Size = { 231, 49.863, 63, 22 },
+				Direction = "Horizontal",
+				PipeStyle = "Direct",
+				Scale = 1,
+				Offset = { 0, 0 }
+			},
+			Tools = ordered() {
+				CFK_CT = Custom {
+					NameSet = true,
+					Inputs = {
+						NumberIn1 = Input {
+							Value = 0.917647063732147,
+							Expression = "KeyColorR",
+						},
+						NumberIn2 = Input {
+							Value = 0.901960790157318,
+							Expression = "KeyColorG",
+						},
+						NumberIn3 = Input {
+							Value = 0.882337689399719,
+							Expression = "KeyColorB",
+						},
+						NumberIn4 = Input { Value = 0.0001, },
+						AlphaExpression = Input { Value = "abs(n1-r1) < n4 && abs(n2-g1) < n4 && abs(n3-b1) < n4", },
+						KeyColorR = Input { Value = 0.917647063732147, },
+						KeyColorG = Input { Value = 0.901960790157318, },
+						KeyColorB = Input { Value = 0.882337689399719, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 2.74999, 6.4313 } },
+					UserControls = ordered() {
+						KeyColorR = {
+							INP_MaxAllowed = 1,
+							INP_Integer = false,
+							INPID_InputControl = "ColorControl",
+							CLRC_ColorSpace = "HSV",
+							INP_MaxScale = 1,
+							IC_ControlGroup = 1,
+							INP_MinScale = 0,
+							INP_MinAllowed = 0,
+							LINKID_DataType = "Number",
+							IC_ControlID = 0,
+							INP_Passive = true,
+							CLRC_ShowWheel = false,
+							LINKS_Name = "Key Color",
+						},
+						KeyColorG = {
+							INP_MaxAllowed = 1,
+							INP_Integer = false,
+							INPID_InputControl = "ColorControl",
+							CLRC_ColorSpace = "HSV",
+							INP_MaxScale = 1,
+							IC_ControlGroup = 1,
+							INP_MinScale = 0,
+							INP_MinAllowed = 0,
+							LINKID_DataType = "Number",
+							IC_ControlID = 1,
+							INP_Passive = true,
+							CLRC_ShowWheel = false,
+							LINKS_Name = "Key Color",
+						},
+						KeyColorB = {
+							INP_MaxAllowed = 1,
+							INP_Integer = false,
+							INPID_InputControl = "ColorControl",
+							CLRC_ColorSpace = "HSV",
+							INP_MaxScale = 1,
+							IC_ControlGroup = 1,
+							INP_MinScale = 0,
+							INP_MinAllowed = 0,
+							LINKID_DataType = "Number",
+							IC_ControlID = 2,
+							INP_Passive = true,
+							CLRC_ShowWheel = false,
+							LINKS_Name = "Key Color",
+						}
+					}
+				},
+				CFK_MASK = BitmapMask {
+					NameSet = true,
+					Inputs = {
+						MaskWidth = Input { Value = 1920, },
+						MaskHeight = Input { Value = 1080, },
+						PixelAspect = Input { Value = { 1, 1 }, },
+						ClippingMode = Input { Value = FuID { "None" }, },
+						Image = Input {
+							SourceOp = "CFK_CT",
+							Source = "Output",
+						},
+					},
+					ViewInfo = OperatorInfo { Pos = { 106, 7.43129 } },
+				}
+			},
+		},
+	},
+	ActiveTool = "CartoonFillKey"
+}

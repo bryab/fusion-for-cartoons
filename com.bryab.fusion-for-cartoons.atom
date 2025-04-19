@@ -10,6 +10,7 @@
         Deploy = {
             "Macros/FusionForCartoons/CartoonOffsetMask.setting",
             "Macros/FusionForCartoons/CartoonRimLightMask.setting",
+            "Macros/FusionForCartoons/CartoonFillMask.setting",
         },
         Minimum = 9.00,
     }

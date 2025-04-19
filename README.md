@@ -12,11 +12,15 @@ Clone this repository, and add it to the `UserPaths` path in the Fusion PathMap 
 
 ### CartoonRimLightMask
 
-Create a mask to create a proceudral rim light effect, using a generated normal map.
+Create a mask to create a procedural rim light effect, using a generated normal map based on the alpha channel.
 
 ### CartoonOffsetMask
 
-Create a simpler 'alpha offset' mask to achieve a rim light with a harder edge (but limited applications).
+Create a simpler 'alpha offset' mask to achieve a rim light with a harder edge.
+
+### CartoonFillMask
+
+This is a simple "color key" node meant for keying out solid fill colors from 2D artwork, but rather than 'keying out' a color, it produces a mask for that color.
 
 ### Sprite3D
 
