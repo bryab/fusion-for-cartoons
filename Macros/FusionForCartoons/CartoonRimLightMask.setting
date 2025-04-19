@@ -3,11 +3,7 @@
 		CartoonRimLightMask = MacroOperator {
 			CtrlWZoom = false,
 			CustomData = {
-				Path = {
-					Map = {
-						["Setting:"] = "Macros:\\"
-					}
-				},
+				HelpPage = "https://github.com/bryab/fusion-for-cartoons?tab=readme-ov-file#cartoonrimlightmask",
 			},
 			Inputs = ordered() {
 				MainInput1 = InstanceInput {

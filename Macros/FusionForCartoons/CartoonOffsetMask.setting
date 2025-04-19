@@ -2,6 +2,9 @@
 	Tools = ordered() {
 		CartoonOffsetMask = MacroOperator {
 			CtrlWZoom = false,
+			CustomData = {
+				HelpPage = "https://github.com/bryab/fusion-for-cartoons?tab=readme-ov-file#cartoonoffsetmask",
+			},
 			NameSet = true,
 			Inputs = ordered() {
 				Offset = Input { Value = { 0.481971454058876, 0.475736925515055 }, },

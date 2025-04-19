@@ -3,6 +3,9 @@
 		Sprite3D = MacroOperator {
 			CtrlWZoom = false,
 			NameSet = true,
+			CustomData = {
+				HelpPage = "https://github.com/bryab/fusion-for-cartoons",
+			},
 			Inputs = ordered() {
 				StartFrame = Input { Value = -30, },
 				Comments = Input { Value = "v02", },
