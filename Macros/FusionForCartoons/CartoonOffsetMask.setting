@@ -20,6 +20,10 @@
 					SourceOp = "FinalMask",
 					Source = "EffectMask",
 				},
+				PaintMode = InstanceInput {
+					SourceOp = "FinalMask",
+					Source = "PaintMode",
+				},
 				CommentsNest = Input { Value = 0, },
 			},
 			Outputs = {
